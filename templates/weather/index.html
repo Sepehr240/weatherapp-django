@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather SPA</title>
+  <link rel="stylesheet" href="{% static 'weatherapp/style.css' %}">
+  <script>
+    async function fetchWeather(city) {
+      if (!city) return;
+      const apiKey = '627e739338a21357be7d7e8dd1a7e8a2';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('City not found');
+        const data = await response.json();
+        document.getElementById('weather-result').innerHTML = `
+          <h2>${data.name}, ${data.sys.country}</h2>
+          <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}" />
+          <p><strong>Temperature:</strong> ${data.main.temp} °C</p>
+          <p><strong>Weather:</strong> ${data.weather[0].description}</p>
+          <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+          <p><strong>Wind Speed:</strong> ${data.wind.speed} m/s</p>
+        `;
+      } catch (error) {
+        document.getElementById('weather-result').innerHTML = `<p style="color:#e74c3c;">${error.message}</p>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('search-form');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const city = document.getElementById('city-input').value.trim();
+        fetchWeather(city);
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Check the Weather</h1>
+    <form id="search-form" autocomplete="off">
+      <div class="search-wrapper">
+        <input type="text" id="city-input" placeholder="Enter city name..." required />
+        <button type="submit">Search</button>
+      </div>
+    </form>
+    <div id="weather-result">
+      <p>Enter a city name above and click Search to see the weather.</p>
+    </div>
+    <div class="auth-buttons">
+      <a href="{% url 'register' %}" class="auth-btn">Register</a>
+      <a href="{% url 'login' %}" class="auth-btn">Login</a>
+    </div>
+  </div>
+</body>
+</html>
