@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Register</title>
+  <title>Weather App Register</title>
   <link rel="stylesheet" href="{% static 'weatherapp/style.css' %}">
 </head>
 <body>
@@ -17,6 +17,14 @@
       <input type="text" name="username" placeholder="Username" required>
       <input type="password" name="password1" placeholder="Password" required>
       <input type="password" name="password2" placeholder="Confirm Password" required>
+
+      <!-- Example: custom fields -->
+      <!-- Uncomment if you want to collect on signup -->
+      <!--
+      <textarea name="bio" placeholder="Tell us about yourself"></textarea>
+      <input type="text" name="location" placeholder="Location">
+      -->
+
       <button type="submit">Register</button>
     </form>
     <div class="switch-link">
